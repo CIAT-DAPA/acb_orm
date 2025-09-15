@@ -1,0 +1,18 @@
+from mongoengine import Document, StringField, EmbeddedDocumentField, ReferenceField, EnumField, BooleanField, ListField, EmbeddedDocument
+from acb_orm.auxiliaries.log import Log
+from acb_orm.collections.bulletins_master import BulletinsMaster
+from acb_orm.collections.users import User
+from acb_orm.auxiliaries.comment import Comment
+
+class BulletinReviews(Document):
+    """
+    This model maps to the 'bulletin_reviews' collection. It records each
+    review cycle for a bulletin, including comments and completion status.
+    """
+    meta = {'collection': 'bulletin_reviews'}
+
+    bulletin_master_id = ReferenceField(BulletinsMaster, required=True)
+    reviewer_user_id = ReferenceField(User, required=True)
+    log = EmbeddedDocumentField(Log, required=True)
+    completed_at = StringField()
+    comments = ListField(EmbeddedDocumentField(Comment))
