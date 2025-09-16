@@ -12,7 +12,7 @@ class TemplatesVersion(Document):
 
     template_master_id = ReferenceField(TemplatesMaster, required=True)
     version_num = StringField()
-    previous_version_id = ReferenceField('TemplatesVersion')
+    previous_version_id = ReferenceField('self')
     log = EmbeddedDocumentField(Log, required=True)
     commit_message = StringField(required=True)
     content = DictField(required=True)

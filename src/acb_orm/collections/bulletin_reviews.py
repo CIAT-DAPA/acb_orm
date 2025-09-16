@@ -1,4 +1,4 @@
-from mongoengine import Document, StringField, EmbeddedDocumentField, ReferenceField, EnumField, BooleanField, ListField, EmbeddedDocument
+from mongoengine import Document, DateTimeField, EmbeddedDocumentField, ReferenceField, ListField
 from acb_orm.auxiliaries.log import Log
 from acb_orm.collections.bulletins_master import BulletinsMaster
 from acb_orm.collections.users import User
@@ -14,5 +14,5 @@ class BulletinReviews(Document):
     bulletin_master_id = ReferenceField(BulletinsMaster, required=True)
     reviewer_user_id = ReferenceField(User, required=True)
     log = EmbeddedDocumentField(Log, required=True)
-    completed_at = StringField()
+    completed_at = DateTimeField()
     comments = ListField(EmbeddedDocumentField(Comment))
