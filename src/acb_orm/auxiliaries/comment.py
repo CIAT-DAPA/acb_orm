@@ -17,5 +17,4 @@ class Comment(EmbeddedDocument):
     created_at = DateTimeField(required=True, default=datetime.now())
     # This field is optional as per documentation
     target_element = EmbeddedDocumentField(TargetElement)
-    # The 'self' reference allows for recursion in replies
     replies = ListField(EmbeddedDocumentField('self'), default=list)

@@ -4,7 +4,7 @@ from acb_orm.collections.roles import Role
 
 class UserAccess(EmbeddedDocument):
     """
-    Embedded document to define user's access within a specific group.
+    Embedded document to define a user's access and role within a group.
     """
-    user_id = ReferenceField( User, required=True)
-    role_id = ReferenceField( Role, required=True)
+    user_id = ReferenceField(User, required=True)
+    role_id = ReferenceField(Role, required=True)
