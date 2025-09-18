@@ -1,32 +1,31 @@
 # Bulletin Builder ORM 💡📄
 
-## 📌 Introducción
+## 📌 Introduction
 
-Bulletin Builder ORM es una capa de abstracción basada en Python y MongoEngine para interactuar con una base de datos MongoDB. Este ORM facilita la gestión de datos para la aplicación Bulletin Builder, proporcionando una interfaz robusta y mantenible para operaciones CRUD y control de acceso.
+Bulletin Builder ORM is a Python and MongoEngine-based abstraction layer for interacting with a MongoDB database. This ORM streamlines data management for the Bulletin Builder application, providing a robust and maintainable interface for CRUD operations and access control.
 
-
-## 🏷️ Versión & Etiquetas
+## 🏷️ Version & Tags
 
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/CIAT-DAPA/acb_orm)
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/CIAT-DAPA/acb_orm)
 
-## 📖 Documentación
+## 📖 Documentation
 
-Consulta la documentación completa en [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/CIAT-DAPA/acb_orm)
+See the complete documentation at [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/CIAT-DAPA/acb_orm)
 
 ## ✨ Features
 
-- Estructura modular por dominio (templates, bulletins, cards, users, roles, groups, reviews, visual resources)
-- Basado en MongoEngine para mapeo eficiente con MongoDB
-- Compatible con Python > 3.10
-- Esquemas Pydantic para validación robusta y serialización
-- Fácil integración en sistemas Bulletin Builder y otros proyectos
+- Modular structure by domain (templates, bulletins, cards, users, roles, groups, reviews, visual resources)
+- Based on MongoEngine for efficient mapping with MongoDB
+- Compatible with Python > 3.10
+- Pydantic schemas for robust validation and serialization
+- Easy integration into Bulletin Builder systems and other projects
 
-## ✅ Requerimientos
+## ✅ Requirements
 
 - Python > 3.10
-- MongoDB (local o remoto)
-- Dependencias:
+- MongoDB (local or remote)
+- Dependencies:
   - mongoengine
   - pymongo
   - dnspython
@@ -34,167 +33,165 @@ Consulta la documentación completa en [![Ask DeepWiki](https://deepwiki.com/bad
   - pydantic
   - typing_extensions
 
-## 🚀 Instalación
+## 🚀 Installation
 
-Instala directamente desde GitHub:
+Install directly from GitHub:
 
 ```bash
 pip install git+https://github.com/CIAT-DAPA/acb_orm
 ```
 
-Para instalar una versión específica:
+To install a specific version:
 
 ```bash
 pip install git+https://github.com/CIAT-DAPA/acb_orm@v0.0.1
 ```
 
-## 🔧 Configuración de entorno
+## 🔧 Environment Configuration
 
-Configura la conexión a la base de datos creando un archivo `.env` en la raíz del proyecto o estableciendo variables de entorno:
+Configure the database connection by creating a `.env` file in the project root or setting environment variables:
 
 ```ini
-DATABASE_URI=mongodb://usuario:contraseña@localhost:27017
+DATABASE_URI=mongodb://user:password@localhost:27017
 DATABASE_NAME=bulletin_builder
 ```
 
-## 🏗️ Estructura del Proyecto
+## 🏗️ Project Structure
 
 ```bash
 acb_orm/
 │
 ├── src/
 │   └── acb_orm/
-│       ├── collections/      # Modelos MongoEngine para cada colección
-│       ├── schemas/          # Esquemas Pydantic para validación
-│       ├── auxiliaries/      # Documentos embebidos y utilidades
-│       ├── enums/            # Enumeraciones para estados y tipos
-│       ├── validations/      # Validaciones personalizadas
+│       ├── collections/      # MongoEngine models for each collection
+│       ├── schemas/          # Pydantic schemas for validation
+│       ├── auxiliaries/      # Embedded documents and utilities
+│       ├── enums/            # Enumerations for states and types
+│       ├── validations/      # Custom validations
 │
-├── tests/                    # Pruebas unitarias y de integración
-├── pyproject.toml            # Configuración del paquete
-└── README.md                 # Documentación principal
+├── tests/                    # Unit and integration tests
+├── pyproject.toml            # Package configuration
+└── README.md                 # Main documentation
 ```
 
-## 🧪 Pruebas
+## 🧪 Testing
 
-Ejecuta todos los tests con:
+Run all tests with:
 
 ```bash
 PYTHONPATH=src pytest tests/
 ```
 
-## 🗂️ Colecciones de la Base de Datos
+## 🗂️ Database Collections
 
-La base de datos está organizada en las siguientes colecciones, cada una con su propósito y estructura específica:
+The database is organized into the following collections, each with its specific purpose and structure:
 
 ### templates_master
 
-Repositorio principal de plantillas, agrupando todas sus versiones y metadatos.
+Main template repository, grouping all versions and metadata.
 
 - `_id`: ObjectId
 - `template_name`: string
 - `description`: string
-- `log`: objeto de auditoría (created_at, creator_user_id, updated_at, updater_user_id)
-- `status`: string (ej. "activa", "archivada")
-- `current_version_id`: referencia a `templates_versions`
-- `access_config`: objeto de control de acceso (`access_type`, `allowed_groups`)
+- `log`: audit object (created_at, creator_user_id, updated_at, updater_user_id)
+- `status`: string (e.g., "active", "archived")
+- `current_version_id`: reference to `templates_versions`
+- `access_config`: access control object (`access_type`, `allowed_groups`)
 
 ### templates_versions
 
-Almacena cada versión individual de una plantilla como snapshot inmutable.
+Stores each individual version of a template as an immutable snapshot.
 
 - `_id`: ObjectId
-- `template_master_id`: referencia a `templates_master`
-- `version_num`: string o número
-- `previous_version_id`: referencia a versión anterior o null
-- `log`: objeto de auditoría
+- `template_master_id`: reference to `templates_master`
+- `version_num`: string or number
+- `previous_version_id`: reference to previous version or null
+- `log`: audit object
 - `commit_message`: string
-- `content`: estructura y diseño de la plantilla
+- `content`: template structure and design
 
 ### bulletins_master
 
-Índice de boletines, contiene metadatos y referencia a la versión más reciente.
+Bulletin index, contains metadata and reference to the latest version.
 
 - `_id`: ObjectId
 - `bulletin_name`: string
-- `base_template_master_id`: referencia a `templates_master`
-- `base_template_version_id`: referencia a `templates_versions`
-- `current_version_id`: referencia a `bulletins_versions`
-- `status`: string (ej. "draft", "published")
-- `log`: objeto de auditoría
+- `base_template_master_id`: reference to `templates_master`
+- `base_template_version_id`: reference to `templates_versions`
+- `current_version_id`: reference to `bulletins_versions`
+- `status`: string (e.g., "draft", "published")
+- `log`: audit object
 
 ### bulletins_versions
 
-Almacena cada versión completa e inmutable de un boletín.
+Stores each complete and immutable version of a bulletin.
 
 - `_id`: ObjectId
-- `bulletin_master_id`: referencia a `bulletins_master`
-- `version_num`: número o string
-- `previous_version_id`: referencia a versión anterior o null
-- `log`: objeto de auditoría
-- `data`: estructura completa del boletín con campos llenos
+- `bulletin_master_id`: reference to `bulletins_master`
+- `version_num`: number or string
+- `previous_version_id`: reference to previous version or null
+- `log`: audit object
+- `data`: complete bulletin structure with filled fields
 
 ### bulletin_reviews
 
-Registro de cada ciclo de revisión de un boletín.
+Record of each bulletin review cycle.
 
 - `_id`: ObjectId
-- `bulletin_master_id`: referencia a `bulletins_master`
-- `reviewer_user_id`: referencia a `users`
-- `log`: objeto de auditoría
-- `completed_at`: fecha de finalización
-- `comments`: array de comentarios y respuestas anidadas
+- `bulletin_master_id`: reference to `bulletins_master`
+- `reviewer_user_id`: reference to `users`
+- `log`: audit object
+- `completed_at`: completion date
+- `comments`: array of comments and nested replies
 
 ### visual_resources
 
-Catálogo de metadatos para archivos visuales.
+Metadata catalog for visual files.
 
 - `_id`: ObjectId
 - `file_url`: string
 - `file_name`: string
 - `file_type`: string
-- `tags`: array de strings
-- `log`: objeto de auditoría
+- `tags`: array of strings
+- `log`: audit object
 
 ### cards
 
-Biblioteca de contenido reutilizable para boletines.
+Reusable content library for bulletins.
 
 - `_id`: ObjectId
 - `card_name`: string
 - `card_type`: string
-- `templates_master_ids`: array de referencias a `templates_master`
-- `access_config`: objeto de control de acceso
-- `content`: estructura flexible de la card
+- `templates_master_ids`: array of references to `templates_master`
+- `access_config`: access control object
+- `content`: flexible card structure
 
 ### users
 
-Información de usuarios y control de acceso.
+User information and access control.
 
 - `_id`: ObjectId
-- `ext_id`: string (ID externo, ej. keycloak)
+- `ext_id`: string (external ID, e.g., keycloak)
 - `is_active`: boolean
-- `log`: objeto de auditoría
+- `log`: audit object
 
 ### roles
 
-Define los roles y permisos de la plataforma.
+Defines platform roles and permissions.
 
 - `_id`: ObjectId
 - `role_name`: string
 - `description`: string
-- `permissions`: objeto CRUD por módulo
-- `log`: objeto de auditoría
+- `permissions`: CRUD object per module
+- `log`: audit object
 
 ### groups
 
-Organiza usuarios por afiliación y país.
+Organizes users by affiliation and country.
 
 - `_id`: ObjectId
 - `group_name`: string
 - `country`: string
 - `description`: string
-- `users_access`: array de objetos `{user_id, role_id}`
-- `log`: objeto de auditoría
-
-
+- `users_access`: array of objects `{user_id, role_id}`
+- `log`: audit object
