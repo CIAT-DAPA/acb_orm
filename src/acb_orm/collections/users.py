@@ -10,4 +10,4 @@ class User(Document):
     
     ext_id = StringField(required=True, unique=True)
     is_active = BooleanField(default=True)
-    log = EmbeddedDocumentField(Log, required=True)
+    log = EmbeddedDocumentField(Log)

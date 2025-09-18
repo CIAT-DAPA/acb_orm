@@ -1,5 +1,4 @@
 from mongoengine import Document, StringField, DictField, EmbeddedDocumentField
-from acb_orm.auxiliaries.log import Log
 
 class Role(Document):
     """
@@ -11,4 +10,4 @@ class Role(Document):
     role_name = StringField(required=True, unique=True)
     description = StringField(required=False)
     permissions = DictField()
-    log = EmbeddedDocumentField(Log, required=True)
+    log = EmbeddedDocumentField('Log', required=True)

@@ -1,6 +1,5 @@
 from mongoengine import Document, StringField, EmbeddedDocumentField, ReferenceField, EnumField, DictField
 from acb_orm.auxiliaries.log import Log
-from acb_orm.collections.bulletins_master import BulletinsMaster
 
 class BulletinsVersion(Document):
     """
@@ -10,7 +9,7 @@ class BulletinsVersion(Document):
     """
     meta = {'collection': 'bulletins_versions'}
 
-    bulletin_master_id = ReferenceField(BulletinsMaster, required=True)
+    bulletin_master_id = ReferenceField('BulletinsMaster', required=True)
     version_num = StringField(required=True)
     previous_version_id = ReferenceField('self')
     log = EmbeddedDocumentField(Log, required=True)

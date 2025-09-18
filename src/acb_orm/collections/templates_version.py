@@ -1,6 +1,5 @@
 from mongoengine import Document, StringField, ObjectIdField, EmbeddedDocumentField, EmbeddedDocument, DictField, ReferenceField
 from acb_orm.auxiliaries.log import Log
-from acb_orm.collections.templates_master import TemplatesMaster
 
 class TemplatesVersion(Document):
     """
@@ -10,9 +9,9 @@ class TemplatesVersion(Document):
     """
     meta = {'collection': 'templates_versions'}
 
-    template_master_id = ReferenceField(TemplatesMaster, required=True)
+    template_master_id = ReferenceField('TemplatesMaster')
     version_num = StringField()
     previous_version_id = ReferenceField('self')
-    log = EmbeddedDocumentField(Log, required=True)
-    commit_message = StringField(required=True)
+    log = EmbeddedDocumentField(Log)
+    commit_message = StringField()
     content = DictField(required=True)

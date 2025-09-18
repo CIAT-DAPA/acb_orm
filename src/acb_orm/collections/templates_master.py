@@ -2,7 +2,6 @@ from mongoengine import Document, StringField, EmbeddedDocumentField, ReferenceF
 from acb_orm.auxiliaries.log import Log
 from acb_orm.auxiliaries.access_config import AccessConfig
 from acb_orm.enums.status_template import StatusTemplate
-from acb_orm.collections.templates_version import TemplatesVersion
 
 class TemplatesMaster(Document):
     """
@@ -13,8 +12,8 @@ class TemplatesMaster(Document):
     meta = {'collection': 'templates_master'}
 
     template_name = StringField(required=True)
-    description = StringField(required=False)
-    current_version_id = ReferenceField(TemplatesVersion, required=False)
+    description = StringField()
+    current_version_id = ReferenceField('TemplatesVersion')
     status = EnumField(StatusTemplate)
-    access_config = EmbeddedDocumentField(AccessConfig, required=True)
-    log = EmbeddedDocumentField(Log, required=True)
+    access_config = EmbeddedDocumentField(AccessConfig)
+    log = EmbeddedDocumentField(Log)

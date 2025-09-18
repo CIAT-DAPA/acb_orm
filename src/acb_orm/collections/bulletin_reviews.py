@@ -1,8 +1,6 @@
 from mongoengine import Document, DateTimeField, EmbeddedDocumentField, ReferenceField, ListField
 from acb_orm.auxiliaries.log import Log
-from acb_orm.collections.bulletins_master import BulletinsMaster
-from acb_orm.collections.users import User
-from acb_orm.auxiliaries.comment import Comment
+from acb_orm.auxiliaries.comment import Comment  # <-- Importa el modelo Comment
 
 class BulletinReviews(Document):
     """
@@ -11,8 +9,8 @@ class BulletinReviews(Document):
     """
     meta = {'collection': 'bulletin_reviews'}
 
-    bulletin_master_id = ReferenceField(BulletinsMaster, required=True)
-    reviewer_user_id = ReferenceField(User, required=True)
+    bulletin_master_id = ReferenceField('BulletinsMaster', required=True)
+    reviewer_user_id = ReferenceField('User', required=True)
     log = EmbeddedDocumentField(Log, required=True)
     completed_at = DateTimeField()
     comments = ListField(EmbeddedDocumentField(Comment))
