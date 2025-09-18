@@ -24,13 +24,15 @@ class ValidReferenceId(str):
         # Get the MongoEngine Document class from the type annotation
         ref_document_cls = getattr(cls, '__mongoengine_document__', None)
 
-        def validate_reference(value: str) -> str:
+        def validate_reference(value: str, other: Any) -> str:
             """
             Validates if the value is a valid ObjectId and if the document exists.
             """
             # Check for a valid ObjectId format
             if not ObjectId.is_valid(value):
                 raise ValueError(f"Invalid ObjectId format for ID: '{value}'")
+
+            #print(other)
 
             # If a reference document class is provided, check for existence
             if ref_document_cls:
