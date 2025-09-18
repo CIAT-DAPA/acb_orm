@@ -2,7 +2,8 @@ from typing import Optional, List
 from datetime import datetime
 from pydantic import BaseModel, Field, model_validator
 from acb_orm.validations.valid_reference_id import ValidReferenceId
-from acb_orm.collections import BulletinsVersion, User
+from acb_orm.collections.bulletins_version import BulletinsVersion
+from acb_orm.collections.users import User
 
 class TargetElementSchema(BaseModel):
     """
