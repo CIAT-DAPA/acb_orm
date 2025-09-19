@@ -1,10 +1,10 @@
 from typing import Optional, List, Any
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, Field, ConfigDict, field_validator
 from acb_orm.schemas.log_schema import LogCreate, LogRead, LogUpdate
 from acb_orm.schemas.comment_schema import CommentCreate, CommentRead, CommentUpdate
 from acb_orm.collections.bulletins_master import BulletinsMaster
 from acb_orm.collections.users import User
-from acb_orm.validations.valid_reference_id import ValidReferenceId
+from acb_orm.validations.valid_reference_id import validate_reference_id
 from datetime import datetime
 
 class BulletinReviewsBase(BaseModel):
@@ -18,10 +18,18 @@ class BulletinReviewsCreate(BulletinReviewsBase):
     Creation schema for the bulletin reviews document.
     All fields are required for creating a new document.
     """
-    bulletin_master_id: ValidReferenceId[BulletinsMaster] = Field(..., description="ID of the bulletin master document.")
-    reviewer_user_id: ValidReferenceId[User] = Field(..., description="ID of the user who is reviewing the bulletin.")
+    bulletin_master_id: str = Field(..., description="ID of the bulletin master document.")
+    reviewer_user_id: str = Field(..., description="ID of the user who is reviewing the bulletin.")
     log: LogCreate = Field(..., description="Audit log.")
     comments: List[CommentCreate] = Field(..., description="Array of comments.")
+
+    @field_validator('bulletin_master_id')
+    def validate_bulletin_master_id(cls, v):
+        return validate_reference_id(v, BulletinsMaster)
+
+    @field_validator('reviewer_user_id')
+    def validate_reviewer_user_id(cls, v):
+        return validate_reference_id(v, User)
 
 class BulletinReviewsUpdate(BaseModel):
     """

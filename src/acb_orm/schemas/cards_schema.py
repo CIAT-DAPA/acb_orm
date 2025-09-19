@@ -1,9 +1,9 @@
 from typing import Optional, List, Any, Dict
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, Field, ConfigDict, field_validator
 from acb_orm.schemas.log_schema import LogCreate, LogRead, LogUpdate
 from acb_orm.schemas.access_config_schema import AccessConfigCreate, AccessConfigRead, AccessConfigUpdate
 from acb_orm.collections.templates_master import TemplatesMaster
-from acb_orm.validations.valid_reference_id import ValidReferenceId
+from acb_orm.validations.valid_reference_id import validate_reference_id
 
 class CardsBase(BaseModel):
     """
@@ -18,11 +18,15 @@ class CardsCreate(CardsBase):
     Creation schema for the cards document.
     All fields are required when creating a new document.
     """
-    templates_master_ids: List[ValidReferenceId[TemplatesMaster]] = Field(..., description="List of IDs of compatible template masters.")
+    templates_master_ids: List[str] = Field(..., description="List of IDs of compatible template masters.")
     access_config: AccessConfigCreate = Field(..., description="Access configuration.")
     content: Dict[str, Any] = Field(..., description="Flexible content structure of the card.")
     log: LogCreate = Field(..., description="Audit log.")
-    
+
+    @field_validator('templates_master_ids', mode='before')
+    def validate_templates_master_ids(cls, v):
+        return [validate_reference_id(tid, TemplatesMaster) for tid in v]
+
 class CardsUpdate(BaseModel):
     """
     Update schema for the cards document.
@@ -30,10 +34,16 @@ class CardsUpdate(BaseModel):
     """
     card_name: Optional[str] = Field(None, description="Name of the card.")
     card_type: Optional[str] = Field(None, description="Type of the card.")
-    templates_master_ids: Optional[List[ValidReferenceId[TemplatesMaster]]] = Field(None, description="List of IDs of compatible template masters.")
+    templates_master_ids: Optional[List[str]] = Field(None, description="List of IDs of compatible template masters.")
     access_config: Optional[AccessConfigUpdate] = Field(None, description="Access configuration.")
     log: Optional[LogUpdate] = Field(..., description="Audit log.")
     content: Optional[Dict[str, Any]] = Field(None, description="Flexible content structure of the card.")
+
+    @field_validator('templates_master_ids', mode='before')
+    def validate_templates_master_ids(cls, v):
+        if v is None:
+            return v
+        return [validate_reference_id(tid, TemplatesMaster) for tid in v]
 
 class CardsRead(CardsBase):
     """

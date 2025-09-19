@@ -1,7 +1,7 @@
 from typing import Optional, List
 from datetime import datetime
-from pydantic import BaseModel, Field, model_validator
-from acb_orm.validations.valid_reference_id import ValidReferenceId
+from pydantic import BaseModel, Field, model_validator, field_validator
+from acb_orm.validations.valid_reference_id import validate_reference_id
 from acb_orm.collections.bulletins_version import BulletinsVersion
 from acb_orm.collections.users import User
 
@@ -38,8 +38,16 @@ class CommentCreate(CommentBase):
     """
     Creation schema for a new Comment.
     """
-    bulletin_version_id: ValidReferenceId[BulletinsVersion] = Field(..., description="ID of the bulletin version.")
-    author_id: ValidReferenceId[User] = Field(..., description="ID of the user who authored the comment.")
+    bulletin_version_id: str = Field(..., description="ID of the bulletin version.")
+    author_id: str = Field(..., description="ID of the user who authored the comment.")
+
+    @field_validator('bulletin_version_id')
+    def validate_bulletin_version_id(cls, v):
+        return validate_reference_id(v, BulletinsVersion)
+
+    @field_validator('author_id')
+    def validate_author_id(cls, v):
+        return validate_reference_id(v, User)
 
 class CommentUpdate(BaseModel):
     """
