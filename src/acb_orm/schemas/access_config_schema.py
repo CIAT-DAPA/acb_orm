@@ -1,7 +1,7 @@
 from typing import Optional, List
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, Field, model_validator, field_validator
 from acb_orm.enums.access_type import AccessType
-from acb_orm.validations.valid_reference_id import ValidReferenceId
+from acb_orm.validations.valid_reference_id import validate_reference_id
 from acb_orm.collections.groups import Group
 
 class AccessConfigCreate(BaseModel):
@@ -10,8 +10,13 @@ class AccessConfigCreate(BaseModel):
     It inherits the base validation logic.
     """
     access_type: AccessType = Field(..., description="The type of access to the document.")
-    allowed_groups: List[ValidReferenceId[Group]] = Field([], description="List of allowed group IDs.")
-    
+    allowed_groups: List[str] = Field([], description="List of allowed group IDs.")
+
+    @field_validator('allowed_groups', mode='before')
+    def validate_allowed_groups(cls, v):
+        # v is a list of group ids
+        return [validate_reference_id(group_id, Group) for group_id in v]
+
     @model_validator(mode='after')
     def validate_groups_for_access_type(self):
         """
@@ -30,7 +35,13 @@ class AccessConfigUpdate(BaseModel):
     All fields are optional to allow for partial updates.
     """
     access_type: Optional[AccessType] = Field(None, description="The type of access to the document.")
-    allowed_groups: Optional[List[ValidReferenceId[Group]]] = Field(None, description="List of allowed group IDs.")
+    allowed_groups: Optional[List[str]] = Field(None, description="List of allowed group IDs.")
+
+    @field_validator('allowed_groups', mode='before')
+    def validate_allowed_groups(cls, v):
+        if v is None:
+            return v
+        return [validate_reference_id(group_id, Group) for group_id in v]
 
     @model_validator(mode='after')
     def validate_groups_on_update(self):
