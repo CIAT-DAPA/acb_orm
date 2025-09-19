@@ -1,12 +1,12 @@
 from typing import Optional, List
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, Field, ConfigDict, field_validator
 from acb_orm.schemas.log_schema import LogCreate, LogUpdate, LogRead
 from acb_orm.enums.status_bulletin import StatusBulletin
 from acb_orm.schemas.access_config_schema import AccessConfigCreate, AccessConfigUpdate, AccessConfigRead
 from acb_orm.collections.templates_master import TemplatesMaster
 from acb_orm.collections.templates_version import TemplatesVersion
 from acb_orm.collections.bulletins_version import BulletinsVersion
-from acb_orm.validations.valid_reference_id import ValidReferenceId
+from acb_orm.validations.valid_reference_id import validate_reference_id
 
 class BulletinsMasterBase(BaseModel):
     """
@@ -21,12 +21,26 @@ class BulletinsMasterCreate(BulletinsMasterBase):
     Creation schema for the bulletin master document.
     All fields are required when creating a new document.
     """
-    base_template_master_id: ValidReferenceId[TemplatesMaster] = Field(..., description="ObjectId of the base template master.")
-    base_template_version_id: ValidReferenceId[TemplatesVersion] = Field(..., description="ObjectId of the specific base template version.")
-    current_version_id: Optional[ValidReferenceId[BulletinsVersion]] = Field(None, description="ObjectId of the current bulletin version.")
+    base_template_master_id: str = Field(..., description="ObjectId of the base template master.")
+    base_template_version_id: str = Field(..., description="ObjectId of the specific base template version.")
+    current_version_id: Optional[str] = Field(None, description="ObjectId of the current bulletin version.")
     access_config: AccessConfigCreate = Field(..., description="Access configuration.")
     log: LogCreate = Field(..., description="Audit log.")
-    
+
+    @field_validator('base_template_master_id')
+    def validate_base_template_master_id(cls, v):
+        return validate_reference_id(v, TemplatesMaster)
+
+    @field_validator('base_template_version_id')
+    def validate_base_template_version_id(cls, v):
+        return validate_reference_id(v, TemplatesVersion)
+
+    @field_validator('current_version_id')
+    def validate_current_version_id(cls, v):
+        if v is not None:
+            return validate_reference_id(v, BulletinsVersion)
+        return v
+
 class BulletinsMasterUpdate(BaseModel):
     """
     Update schema for the bulletin master document.
@@ -35,11 +49,29 @@ class BulletinsMasterUpdate(BaseModel):
     """
     bulletin_name: Optional[str] = Field(None, description="Name of the bulletin.")
     status: Optional[StatusBulletin] = Field(None, description="Current status of the bulletin.")
-    base_template_master_id: Optional[ValidReferenceId[TemplatesMaster]] = Field(None, description="ObjectId of the base template master.")
-    base_template_version_id: Optional[ValidReferenceId[TemplatesVersion]] = Field(None, description="ObjectId of the specific base template version.")
-    current_version_id: Optional[ValidReferenceId[BulletinsVersion]] = Field(None, description="ObjectId of the current bulletin version.")
+    base_template_master_id: Optional[str] = Field(None, description="ObjectId of the base template master.")
+    base_template_version_id: Optional[str] = Field(None, description="ObjectId of the specific base template version.")
+    current_version_id: Optional[str] = Field(None, description="ObjectId of the current bulletin version.")
     access_config: Optional[AccessConfigUpdate] = Field(None, description="Access configuration.")
     log: LogUpdate = Field(..., description="Audit log.")
+
+    @field_validator('base_template_master_id')
+    def validate_base_template_master_id(cls, v):
+        if v is not None:
+            return validate_reference_id(v, TemplatesMaster)
+        return v
+
+    @field_validator('base_template_version_id')
+    def validate_base_template_version_id(cls, v):
+        if v is not None:
+            return validate_reference_id(v, TemplatesVersion)
+        return v
+
+    @field_validator('current_version_id')
+    def validate_current_version_id(cls, v):
+        if v is not None:
+            return validate_reference_id(v, BulletinsVersion)
+        return v
 
 class BulletinsMasterRead(BulletinsMasterBase):
     """

@@ -1,9 +1,9 @@
 from typing import Optional, Any, Dict
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, Field, ConfigDict, field_validator
 from acb_orm.schemas.log_schema import LogCreate, LogUpdate, LogRead
 from acb_orm.collections.bulletins_master import BulletinsMaster
 from acb_orm.collections.bulletins_version import BulletinsVersion
-from acb_orm.validations.valid_reference_id import ValidReferenceId
+from acb_orm.validations.valid_reference_id import validate_reference_id
 
 class BulletinsVersionBase(BaseModel):
     """
@@ -18,20 +18,42 @@ class BulletinsVersionCreate(BulletinsVersionBase):
     Creation schema for the bulletin version document.
     All fields are required when creating a new document.
     """
-    bulletin_master_id: ValidReferenceId[BulletinsMaster] = Field(..., description="ObjectId of the bulletin master document.")
-    previous_version_id: Optional[ValidReferenceId[BulletinsVersion]] = Field(None, description="ObjectId of the previous bulletin version.")
+    bulletin_master_id: str = Field(..., description="ObjectId of the bulletin master document.")
+    previous_version_id: Optional[str] = Field(None, description="ObjectId of the previous bulletin version.")
     log: LogCreate = Field(..., description="Audit log.")
-    
+
+    @field_validator('bulletin_master_id')
+    def validate_bulletin_master_id(cls, v):
+        return validate_reference_id(v, BulletinsMaster)
+
+    @field_validator('previous_version_id')
+    def validate_previous_version_id(cls, v):
+        if v is not None:
+            return validate_reference_id(v, BulletinsVersion)
+        return v
+
 class BulletinsVersionUpdate(BaseModel):
     """
     Update schema for the bulletin version document.
     Since versions are immutable, this schema is intended for very specific
     updates, and the log is handled by the service layer.
     """
-    bulletin_master_id: Optional[ValidReferenceId[BulletinsMaster]] = Field(..., description="ObjectId of the bulletin master document.")
-    previous_version_id: Optional[ValidReferenceId[BulletinsVersion]] = Field(None, description="ObjectId of the previous bulletin version.")
+    bulletin_master_id: Optional[str] = Field(..., description="ObjectId of the bulletin master document.")
+    previous_version_id: Optional[str] = Field(None, description="ObjectId of the previous bulletin version.")
     log: Optional[LogUpdate] = Field(..., description="Audit log.")
     data: Optional[Dict[str, Any]] = Field(None, description="Updated user-specific data.")
+
+    @field_validator('bulletin_master_id')
+    def validate_bulletin_master_id(cls, v):
+        if v is not None:
+            return validate_reference_id(v, BulletinsMaster)
+        return v
+
+    @field_validator('previous_version_id')
+    def validate_previous_version_id(cls, v):
+        if v is not None:
+            return validate_reference_id(v, BulletinsVersion)
+        return v
 
 class BulletinsVersionRead(BulletinsVersionBase):
     """
