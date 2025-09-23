@@ -19,7 +19,7 @@ class VisualResourcesCreate(VisualResourcesBase):
     Creation schema for the visual resources document.
     All fields are required when creating a new document.
     """
-    log: LogCreate = Field(..., description="Audit log.")
+    log: Optional[LogCreate] = Field(..., description="Audit log.")
 
 
 class VisualResourcesUpdate(BaseModel):

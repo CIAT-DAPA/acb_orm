@@ -21,7 +21,7 @@ class TemplatesVersionCreate(TemplatesVersionBase):
     """
     template_master_id: str = Field(..., description="ObjectId of the associated template master.")
     previous_version_id: Optional[str] = Field(None, description="ObjectId of the previous version.")
-    log: LogCreate = Field(..., description="Audit log.")
+    log: Optional[LogCreate] = Field(..., description="Audit log.")
 
     @field_validator('template_master_id')
     def validate_template_master_id(cls, v):

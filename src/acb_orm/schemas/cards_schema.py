@@ -21,7 +21,7 @@ class CardsCreate(CardsBase):
     templates_master_ids: List[str] = Field(..., description="List of IDs of compatible template masters.")
     access_config: AccessConfigCreate = Field(..., description="Access configuration.")
     content: Dict[str, Any] = Field(..., description="Flexible content structure of the card.")
-    log: LogCreate = Field(..., description="Audit log.")
+    log: Optional[LogCreate] = Field(..., description="Audit log.")
 
     @field_validator('templates_master_ids', mode='before')
     def validate_templates_master_ids(cls, v):
