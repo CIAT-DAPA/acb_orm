@@ -7,7 +7,13 @@ class BulletinsVersion(Document):
     immutable version of a bulletin, with the specific data entered by the
     user.
     """
-    meta = {'collection': 'bulletins_versions'}
+    meta = {
+        'collection': 'bulletins_versions',
+        'indexes': [
+            'bulletin_master_id',
+            'version_num'
+        ]
+    }
 
     bulletin_master_id = ReferenceField('BulletinsMaster', required=True)
     version_num = StringField(required=True)

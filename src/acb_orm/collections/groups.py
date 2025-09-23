@@ -7,7 +7,13 @@ class Group(Document):
     This model maps to the 'groups' collection. It organizes users by
     affiliation and stores their roles within the group.
     """
-    meta = {'collection': 'groups'}
+    meta = {
+        'collection': 'groups',
+        'indexes': [
+            {'fields': ['group_name'], 'unique': True},
+            'country'
+        ]
+    }
 
     group_name = StringField(required=True, unique=True)
     country = StringField(required=True)

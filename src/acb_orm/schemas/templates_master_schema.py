@@ -22,7 +22,7 @@ class TemplatesMasterCreate(TemplatesMasterBase):
     """
     current_version_id: Optional[str] = Field(None, description="ObjectId of the current version.")
     access_config: AccessConfigCreate = Field(..., description="Access configuration.")
-    log: LogCreate = Field(..., description="Audit log.")
+    log: Optional[LogCreate] = Field(..., description="Audit log.")
 
     @field_validator('current_version_id')
     def validate_current_version_id(cls, v):

@@ -25,7 +25,7 @@ class BulletinsMasterCreate(BulletinsMasterBase):
     base_template_version_id: str = Field(..., description="ObjectId of the specific base template version.")
     current_version_id: Optional[str] = Field(None, description="ObjectId of the current bulletin version.")
     access_config: AccessConfigCreate = Field(..., description="Access configuration.")
-    log: LogCreate = Field(..., description="Audit log.")
+    log: Optional[LogCreate] = Field(..., description="Audit log.")
 
     @field_validator('base_template_master_id')
     def validate_base_template_master_id(cls, v):
@@ -53,7 +53,7 @@ class BulletinsMasterUpdate(BaseModel):
     base_template_version_id: Optional[str] = Field(None, description="ObjectId of the specific base template version.")
     current_version_id: Optional[str] = Field(None, description="ObjectId of the current bulletin version.")
     access_config: Optional[AccessConfigUpdate] = Field(None, description="Access configuration.")
-    log: LogUpdate = Field(..., description="Audit log.")
+    log: Optional[LogUpdate] = Field(..., description="Audit log.")
 
     @field_validator('base_template_master_id')
     def validate_base_template_master_id(cls, v):

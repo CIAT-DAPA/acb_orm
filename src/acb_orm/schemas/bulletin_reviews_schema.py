@@ -20,7 +20,7 @@ class BulletinReviewsCreate(BulletinReviewsBase):
     """
     bulletin_master_id: str = Field(..., description="ID of the bulletin master document.")
     reviewer_user_id: str = Field(..., description="ID of the user who is reviewing the bulletin.")
-    log: LogCreate = Field(..., description="Audit log.")
+    log: Optional[LogCreate] = Field(..., description="Audit log.")
     comments: List[CommentCreate] = Field(..., description="Array of comments.")
 
     @field_validator('bulletin_master_id')

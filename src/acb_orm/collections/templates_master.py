@@ -9,7 +9,13 @@ class TemplatesMaster(Document):
     main repository for templates, grouping all their versions and
     high-level metadata.
     """
-    meta = {'collection': 'templates_master'}
+    meta = {
+        'collection': 'templates_master',
+        'indexes': [
+            {'fields': ['template_name'], 'unique': True},
+            'current_version_id'
+        ]
+    }
 
     template_name = StringField(required=True)
     description = StringField()
