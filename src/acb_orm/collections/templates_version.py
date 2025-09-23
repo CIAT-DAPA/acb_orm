@@ -16,7 +16,7 @@ class TemplatesVersion(Document):
         ]
     }
 
-    template_master_id = ReferenceField('TemplatesMaster', required=True)
+    template_master_id = ReferenceField('TemplatesMaster')
     previous_version_id = ReferenceField('self')
     version_num = StringField()
     commit_message = StringField(required=True)
