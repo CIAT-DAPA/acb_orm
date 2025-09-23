@@ -16,7 +16,7 @@ class RolesCreate(RolesBase):
     Creation schema for the roles document.
     All fields are required when creating a new document.
     """
-    log: Optional[LogCreate] = Field(..., description="Audit log.")
+    log: Optional[LogCreate] = Field(None, description="Audit log.")
     
 class RolesUpdate(BaseModel):
     """

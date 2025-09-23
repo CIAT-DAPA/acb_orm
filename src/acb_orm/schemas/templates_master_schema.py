@@ -22,7 +22,7 @@ class TemplatesMasterCreate(TemplatesMasterBase):
     """
     current_version_id: Optional[str] = Field(None, description="ObjectId of the current version.")
     access_config: AccessConfigCreate = Field(..., description="Access configuration.")
-    log: Optional[LogCreate] = Field(..., description="Audit log.")
+    log: Optional[LogCreate] = Field(None, description="Audit log.")
 
     @field_validator('current_version_id')
     def validate_current_version_id(cls, v):
@@ -41,7 +41,7 @@ class TemplatesMasterUpdate(BaseModel):
     status: Optional[StatusTemplate] = Field(None, description="Current status of the template.")
     current_version_id: Optional[str] = Field(None, description="ObjectId of the current version.")
     access_config: Optional[AccessConfigUpdate] = Field(None, description="Access configuration.")
-    log: LogUpdate = Field(..., description="Audit log.")
+    log: Optional[LogUpdate] = Field(None, description="Audit log.")
 
     @field_validator('current_version_id')
     def validate_current_version_id(cls, v):
