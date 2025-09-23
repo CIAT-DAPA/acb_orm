@@ -8,7 +8,14 @@ class Cards(Document):
     Model for the 'cards' collection.
     Predefined content library for insertion into bulletins.
     """
-    meta = {'collection': 'cards'}
+    meta = {
+        'collection': 'cards',
+        'indexes': [
+            {'fields': ['card_name'], 'unique': True},
+            'card_type',
+            'templates_master_ids'
+        ]
+    }
 
     card_name = StringField(required=True)
     card_type = StringField(required=True)
