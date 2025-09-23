@@ -7,11 +7,18 @@ class TemplatesVersion(Document):
     immutable version of a template, including its complete structure and
     design at a specific point in time.
     """
-    meta = {'collection': 'templates_versions'}
+    meta = {
+        'collection': 'templates_versions',
+        'indexes': [
+            'template_master_id',
+            'version_num',
+            'previous_version_id'
+        ]
+    }
 
-    template_master_id = ReferenceField('TemplatesMaster')
-    version_num = StringField()
+    template_master_id = ReferenceField('TemplatesMaster', required=True)
     previous_version_id = ReferenceField('self')
-    log = EmbeddedDocumentField(Log)
-    commit_message = StringField()
+    version_num = StringField()
+    commit_message = StringField(required=True)
     content = DictField(required=True)
+    log = EmbeddedDocumentField(Log)

@@ -8,7 +8,14 @@ class BulletinsMaster(Document):
     main repository for bulletins, grouping all their versions and
     high-level metadata.
     """
-    meta = {'collection': 'bulletins_master'}
+    meta = {
+        'collection': 'bulletins_master',
+        'indexes': [
+            {'fields': ['bulletin_name'], 'unique': True},
+            'base_template_master_id',
+            'current_version_id'
+        ]
+    }
     
     bulletin_name = StringField(required=True)
     base_template_master_id = ReferenceField('TemplatesMaster', required=True)
