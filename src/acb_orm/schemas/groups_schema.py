@@ -18,7 +18,7 @@ class GroupsCreate(GroupsBase):
     All fields are required when creating a new document.
     """
     users_access: List[UserAccessCreate] = Field(..., description="List of users and their roles within the group.")
-    log: Optional[LogCreate] = Field(..., description="Audit log.")
+    log: Optional[LogCreate] = Field(None, description="Audit log.")
     
 class GroupsUpdate(BaseModel):
     """

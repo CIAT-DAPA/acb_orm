@@ -21,7 +21,7 @@ class CardsCreate(CardsBase):
     templates_master_ids: List[str] = Field(..., description="List of IDs of compatible template masters.")
     access_config: AccessConfigCreate = Field(..., description="Access configuration.")
     content: Dict[str, Any] = Field(..., description="Flexible content structure of the card.")
-    log: Optional[LogCreate] = Field(..., description="Audit log.")
+    log: Optional[LogCreate] = Field(None, description="Audit log.")
 
     @field_validator('templates_master_ids', mode='before')
     def validate_templates_master_ids(cls, v):
@@ -36,7 +36,7 @@ class CardsUpdate(BaseModel):
     card_type: Optional[str] = Field(None, description="Type of the card.")
     templates_master_ids: Optional[List[str]] = Field(None, description="List of IDs of compatible template masters.")
     access_config: Optional[AccessConfigUpdate] = Field(None, description="Access configuration.")
-    log: Optional[LogUpdate] = Field(..., description="Audit log.")
+    log: Optional[LogUpdate] = Field(None, description="Audit log.")
     content: Optional[Dict[str, Any]] = Field(None, description="Flexible content structure of the card.")
 
     @field_validator('templates_master_ids', mode='before')
