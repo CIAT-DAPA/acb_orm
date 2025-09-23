@@ -20,7 +20,7 @@ class BulletinReviewsCreate(BulletinReviewsBase):
     """
     bulletin_master_id: str = Field(..., description="ID of the bulletin master document.")
     reviewer_user_id: str = Field(..., description="ID of the user who is reviewing the bulletin.")
-    log: Optional[LogCreate] = Field(..., description="Audit log.")
+    log: Optional[LogCreate] = Field(None, description="Audit log.")
     comments: List[CommentCreate] = Field(..., description="Array of comments.")
 
     @field_validator('bulletin_master_id')
@@ -37,7 +37,7 @@ class BulletinReviewsUpdate(BaseModel):
     The log and comments will be handled by the service layer.
     """
     completed_at: Optional[datetime] = Field(None, description="Date and time when the review was completed.")
-    log: Optional[LogUpdate] = Field(..., description="Audit log.")
+    log: Optional[LogUpdate] = Field(None, description="Audit log.")
     comments: Optional[List[CommentCreate]] = Field(None, description="Array of comments.")
 
 class BulletinReviewsRead(BulletinReviewsBase):

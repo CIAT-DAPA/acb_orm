@@ -12,7 +12,7 @@ class TemplatesMaster(Document):
     meta = {
         'collection': 'templates_master',
         'indexes': [
-            {'fields': ['template_name'], 'unique': True},
+            'template_name',
             'current_version_id'
         ]
     }

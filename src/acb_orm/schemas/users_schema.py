@@ -15,7 +15,7 @@ class UsersCreate(UsersBase):
     Creation schema for the users document.
     All fields are required when creating a new document.
     """
-    log: Optional[LogCreate] = Field(..., description="Audit log.")
+    log: Optional[LogCreate] = Field(None, description="Audit log.")
     
 class UsersUpdate(BaseModel):
     """
@@ -31,5 +31,5 @@ class UsersRead(UsersBase):
     Complete representation including the document ID.
     """
     id: str = Field(..., description="ObjectId of the user.")
-    log: Optional[LogRead] = Field(..., description="Audit log.")
+    log: Optional[LogRead] = Field(None, description="Audit log.")
     model_config = ConfigDict(from_attributes=True)

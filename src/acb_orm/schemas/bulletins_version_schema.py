@@ -20,7 +20,7 @@ class BulletinsVersionCreate(BulletinsVersionBase):
     """
     bulletin_master_id: str = Field(..., description="ObjectId of the bulletin master document.")
     previous_version_id: Optional[str] = Field(None, description="ObjectId of the previous bulletin version.")
-    log: Optional[LogCreate] = Field(..., description="Audit log.")
+    log: Optional[LogCreate] = Field(None, description="Audit log.")
 
     @field_validator('bulletin_master_id')
     def validate_bulletin_master_id(cls, v):
@@ -40,7 +40,7 @@ class BulletinsVersionUpdate(BaseModel):
     """
     bulletin_master_id: Optional[str] = Field(..., description="ObjectId of the bulletin master document.")
     previous_version_id: Optional[str] = Field(None, description="ObjectId of the previous bulletin version.")
-    log: Optional[LogUpdate] = Field(..., description="Audit log.")
+    log: Optional[LogUpdate] = Field(None, description="Audit log.")
     data: Optional[Dict[str, Any]] = Field(None, description="Updated user-specific data.")
 
     @field_validator('bulletin_master_id')
