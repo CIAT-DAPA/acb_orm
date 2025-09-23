@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "acb_orm"
-version = "v0.0.2"
+version = "v0.0.3"
 description = "ORM for Bulletin Builder database and its methods"
 readme = "README.md"
 requires-python = ">=3.10"
