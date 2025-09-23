@@ -11,7 +11,7 @@ class BulletinsMaster(Document):
     meta = {
         'collection': 'bulletins_master',
         'indexes': [
-            {'fields': ['bulletin_name'], 'unique': True},
+            'bulletin_name',
             'base_template_master_id',
             'current_version_id'
         ]
