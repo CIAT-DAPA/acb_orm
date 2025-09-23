@@ -2,6 +2,15 @@ from typing import Optional, Any, Dict, List
 from pydantic import BaseModel, Field, ConfigDict
 from acb_orm.schemas.log_schema import LogCreate, LogRead, LogUpdate
 
+class RolePermissionSchema(BaseModel):
+    """
+    Schema for CRUD permissions of a module.
+    """
+    c: bool = Field(False, description="Create permission")
+    r: bool = Field(False, description="Read permission")
+    u: bool = Field(False, description="Update permission")
+    d: bool = Field(False, description="Delete permission")
+
 class RolesBase(BaseModel):
     """
     Base schema for the roles document.
@@ -9,7 +18,10 @@ class RolesBase(BaseModel):
     """
     role_name: str = Field(..., description="Name of the role.")
     description: Optional[str] = Field(None, description="Description of the role.")
-    permissions: Dict[str, Any] = Field({}, description="Dictionary of permissions associated with the role.")
+    permissions: Dict[str, RolePermissionSchema] = Field(
+        ...,
+        description="Dictionary of permissions per module. Each key is a module name, value is CRUD permissions."
+    )
 
 class RolesCreate(RolesBase):
     """
@@ -25,7 +37,10 @@ class RolesUpdate(BaseModel):
     """
     role_name: Optional[str] = Field(None, description="Name of the role.")
     description: Optional[str] = Field(None, description="Description of the role.")
-    permissions: Optional[Dict[str, Any]] = Field(None, description="Dictionary of permissions associated with the role.")
+    permissions: Optional[Dict[str, RolePermissionSchema]] = Field(
+        None,
+        description="Dictionary of permissions per module. Each key is a module name, value is CRUD permissions."
+    )
     log: Optional[LogUpdate] = Field(None, description="Audit log.")
 
 class RolesRead(RolesBase):
