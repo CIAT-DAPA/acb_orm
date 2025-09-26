@@ -64,7 +64,15 @@ def test_create_schema_valid(setup_db):
     data = {
         "role_name": "admin",
         "description": "Administrador del sistema",
-        "permissions": {"manage_users": True, "edit_content": True},
+        "permissions": {
+            "bulletins_composer": {"c": True, "r": True, "u": True, "d": True},
+            "template_management": {"c": True, "r": True, "u": True, "d": True},
+            "dashboard_bulletins": {"c": True, "r": True, "u": True, "d": True},
+            "review": {"c": True, "r": True, "u": True, "d": True},
+            "card_management": {"c": True, "r": True, "u": True, "d": True},
+            "access_control": {"c": True, "r": True, "u": True, "d": True},
+            "external_integrations": {"c": True, "r": True, "u": True, "d": True}
+        },
         "log": {
             "created_at": datetime.now(),
             "creator_user_id": setup_db['user_1']
@@ -72,7 +80,8 @@ def test_create_schema_valid(setup_db):
     }
     schema = RolesCreate(**data)
     assert schema.role_name == "admin"
-    assert schema.permissions["manage_users"] is True
+    assert schema.permissions["bulletins_composer"].c is True
+    assert schema.permissions["access_control"].d is True
 
 def test_create_schema_invalid(setup_db):
     data = {
@@ -90,7 +99,10 @@ def test_update_schema_valid(setup_db):
     data = {
         "role_name": "editor",
         "description": "Editor actualizado",
-        "permissions": {"edit_content": True, "publish": True},
+        "permissions": {
+            "card_management": {"c": True, "r": True, "u": False, "d": False},
+            "review": {"c": False, "r": True, "u": True, "d": False}
+        },
         "log": {
             "updated_at": datetime.now(),
             "updater_user_id": setup_db['user_2']
@@ -98,7 +110,8 @@ def test_update_schema_valid(setup_db):
     }
     schema = RolesUpdate(**data)
     assert schema.role_name == "editor"
-    assert schema.permissions["publish"] is True
+    assert schema.permissions["card_management"].c is True
+    assert schema.permissions["card_management"].u is False
     assert schema.log.updater_user_id == setup_db['user_2']
 
 def test_read_schema_valid(setup_db):
@@ -106,7 +119,10 @@ def test_read_schema_valid(setup_db):
         "id": str(ObjectId()),
         "role_name": "admin",
         "description": "Administrador del sistema",
-        "permissions": {"manage_users": True, "edit_content": True},
+        "permissions": {
+            "bulletins_composer": {"c": True, "r": True, "u": True, "d": True},
+            "template_management": {"c": True, "r": True, "u": True, "d": True}
+        },
         "log": {
             "created_at": datetime.now(),
             "creator_user_id": setup_db['user_1']
@@ -115,7 +131,8 @@ def test_read_schema_valid(setup_db):
     schema = RolesRead(**data)
     assert schema.id == data["id"]
     assert schema.role_name == "admin"
-    assert schema.permissions["manage_users"] is True
+    assert schema.permissions["bulletins_composer"].r is True
+    assert schema.permissions["template_management"].u is True
     assert schema.log.creator_user_id == setup_db['user_1']
 
 def test_read_schema_invalid(setup_db):
