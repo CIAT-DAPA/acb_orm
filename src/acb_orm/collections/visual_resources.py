@@ -1,5 +1,8 @@
-from mongoengine import Document, StringField, ListField, EmbeddedDocumentField
+from mongoengine import Document, StringField, ListField, EmbeddedDocumentField, EnumField
 from acb_orm.auxiliaries.log import Log
+from acb_orm.auxiliaries.access_config import AccessConfig
+from acb_orm.enums.status_visual_resource import StatusVisualResource
+from acb_orm.enums.file_type import FileType
 
 class VisualResources(Document):
     """
@@ -10,6 +13,7 @@ class VisualResources(Document):
 
     file_url = StringField(required=True)
     file_name = StringField(required=True)
-    file_type = StringField(required=True)
-    tags = ListField(StringField(), required=False)
+    file_type = EnumField(FileType, required=True)
+    access_config = EmbeddedDocumentField(AccessConfig)
+    status = EnumField(StatusVisualResource)
     log = EmbeddedDocumentField(Log, required=True)
