@@ -15,6 +15,7 @@ class BulletinsMasterBase(BaseModel):
     """
     bulletin_name: str = Field(..., description="Name of the bulletin.")
     status: Optional[StatusBulletin] = Field(StatusBulletin.DRAFT, description="Current status of the bulletin.")
+    thumbnail_images: Optional[List[str]] = Field(None, description="List of thumbnail image URLs.")
 
 class BulletinsMasterCreate(BulletinsMasterBase):
     """
@@ -53,6 +54,7 @@ class BulletinsMasterUpdate(BaseModel):
     base_template_version_id: Optional[str] = Field(None, description="ObjectId of the specific base template version.")
     current_version_id: Optional[str] = Field(None, description="ObjectId of the current bulletin version.")
     access_config: Optional[AccessConfigUpdate] = Field(None, description="Access configuration.")
+    thumbnail_images: Optional[List[str]] = Field(None, description="List of thumbnail image URLs.")
     log: Optional[LogUpdate] = Field(None, description="Audit log.")
 
     @field_validator('base_template_master_id')

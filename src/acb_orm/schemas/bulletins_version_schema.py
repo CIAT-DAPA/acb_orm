@@ -10,7 +10,7 @@ class BulletinsVersionBase(BaseModel):
     Base schema for the bulletin version document.
     Contains common fields for creation and reading.
     """
-    version_num: str = Field(..., description="Version number of the bulletin.")
+    version_num: int = Field(..., description="Version number of the bulletin.")
     data: Dict[str, Any] = Field(..., description="User-specific data for the bulletin content.")
 
 class BulletinsVersionCreate(BulletinsVersionBase):

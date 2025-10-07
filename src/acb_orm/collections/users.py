@@ -15,4 +15,6 @@ class User(Document):
     
     ext_id = StringField(required=True, unique=True)
     is_active = BooleanField(default=True)
+    first_name = StringField()
+    last_name = StringField()
     log = EmbeddedDocumentField(Log)

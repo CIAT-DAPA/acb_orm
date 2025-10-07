@@ -1,4 +1,4 @@
-from mongoengine import Document, StringField, EmbeddedDocumentField, ReferenceField, EnumField
+from mongoengine import Document, StringField, EmbeddedDocumentField, ReferenceField, EnumField, ListField
 from acb_orm.auxiliaries.log import Log
 from acb_orm.auxiliaries.access_config import AccessConfig
 from acb_orm.enums.status_template import StatusTemplate
@@ -21,5 +21,6 @@ class TemplatesMaster(Document):
     description = StringField()
     current_version_id = ReferenceField('TemplatesVersion')
     status = EnumField(StatusTemplate)
+    thumbnail_images = ListField(StringField())
     access_config = EmbeddedDocumentField(AccessConfig)
     log = EmbeddedDocumentField(Log)
