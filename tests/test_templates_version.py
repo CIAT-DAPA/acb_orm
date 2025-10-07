@@ -20,14 +20,14 @@ def test_create_templates_version_model(db_connection, setup_db):
     
     template_version = TemplatesVersion(
         template_master_id=template_master_id,
-        version_num="1.0",
+        version_num=1,
         commit_message="Initial version",
         content={"design": "A simple template"},
         log=log
     )
     template_version.save()
     assert template_version.id is not None
-    assert template_version.version_num == "1.0"
+    assert template_version.version_num == 1
     
 def test_retrieve_templates_version_document(setup_db):
     """
@@ -38,7 +38,7 @@ def test_retrieve_templates_version_document(setup_db):
     retrieved_template = TemplatesVersion.objects.get(id=template_version_id)
     
     assert retrieved_template is not None
-    assert retrieved_template.version_num == "1.0"
+    assert retrieved_template.version_num == 1
     assert retrieved_template.commit_message == "Initial commit"
     assert "key" in retrieved_template.content
 
@@ -52,7 +52,7 @@ def test_create_schema_valid(setup_db):
     data = {
         "template_master_id": setup_db['template_master'],
         "previous_version_id": None,
-        "version_num": "1.1",
+        "version_num": 2,
         "commit_message": "Added new fields",
         "content": {"title": "New Template", "body": "lorem ipsum"},
         "log": {
@@ -61,7 +61,7 @@ def test_create_schema_valid(setup_db):
         }
     }
     schema = TemplatesVersionCreate(**data)
-    assert schema.version_num == "1.1"
+    assert schema.version_num == 2
     assert schema.template_master_id == data["template_master_id"]
     assert schema.commit_message == "Added new fields"
     
@@ -73,7 +73,7 @@ def test_create_schema_invalid_master_reference(setup_db):
     non_existent_master_id = str(ObjectId())
     data = {
         "template_master_id": non_existent_master_id,
-        "version_num": "1.1",
+        "version_num": 2,
         "commit_message": "Added new fields",
         "content": {"title": "New Template"},
         "log": {
@@ -126,7 +126,7 @@ def test_read_schema_valid(setup_db):
         "id": setup_db['template_version'],
         "template_master_id": setup_db['template_master'],
         "previous_version_id": None,
-        "version_num": "1.0",
+        "version_num": 1,
         "commit_message": "Initial commit",
         "content": {"key": "value"},
         "log": {
@@ -136,5 +136,5 @@ def test_read_schema_valid(setup_db):
     }
     schema = TemplatesVersionRead(**data)
     assert schema.id == data['id']
-    assert schema.version_num == "1.0"
+    assert schema.version_num == 1
     assert schema.content == {"key": "value"}
