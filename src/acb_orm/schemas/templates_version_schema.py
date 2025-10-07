@@ -10,7 +10,7 @@ class TemplatesVersionBase(BaseModel):
     Base schema for the template version document.
     Contains common fields for reading and creation.
     """
-    version_num: str = Field(..., description="Version number or identifier.")
+    version_num: int = Field(..., description="Version number or identifier.")
     commit_message: str = Field(..., description="Message describing the changes in this version.")
     content: Dict[str, Any] = Field(..., description="Complete structure and design of the template version.")
 

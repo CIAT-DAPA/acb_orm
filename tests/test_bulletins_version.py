@@ -22,20 +22,20 @@ def test_create_bulletins_version_model(db_connection, setup_db):
     log = Log(**log_data)
     bulletin_version = BulletinsVersion(
         bulletin_master_id=ObjectId(setup_db['bulletin_master']),
-        version_num="2.0",
+        version_num=2,
         previous_version_id=None,
         log=log,
         data={"campo": "nuevo valor"}
     )
     bulletin_version.save()
     assert bulletin_version.id is not None
-    assert bulletin_version.version_num == "2.0"
+    assert bulletin_version.version_num == 2
 
 def test_retrieve_bulletins_version_document(setup_db):
     bulletin_version_id = setup_db['bulletin_version']
     retrieved_version = BulletinsVersion.objects.get(id=bulletin_version_id)
     assert retrieved_version is not None
-    assert retrieved_version.version_num == "1.0"
+    assert retrieved_version.version_num == 1
     assert "campo" in retrieved_version.data
 
 # --- PRUEBAS DE ESQUEMAS DE PYDANTIC ---
@@ -52,13 +52,13 @@ def test_create_schema_valid(setup_db):
         }
     }
     schema = BulletinsVersionCreate(**data)
-    assert schema.version_num == "2.0"
+    assert schema.version_num == 2
     assert schema.bulletin_master_id == data["bulletin_master_id"]
 
 def test_create_schema_invalid_reference(non_existent_master_id, setup_db):
     data = {
         "bulletin_master_id": non_existent_master_id,
-        "version_num": "2.0",
+        "version_num": 2,
         "previous_version_id": None,
         "data": {"campo": "nuevo valor"},
         "log": {
@@ -99,7 +99,7 @@ def test_read_schema_valid(setup_db):
     data = {
         "id": setup_db['bulletin_version'],
         "bulletin_master_id": setup_db['bulletin_master'],
-        "version_num": "1.0",
+        "version_num": 1,
         "previous_version_id": None,
         "data": {"campo": "valor"},
         "log": {
@@ -109,5 +109,5 @@ def test_read_schema_valid(setup_db):
     }
     schema = BulletinsVersionRead(**data)
     assert schema.id == data['id']
-    assert schema.version_num == "1.0"
+    assert schema.version_num == 1
     assert schema.data == {"campo": "valor"}

@@ -14,6 +14,7 @@ class TemplatesMasterBase(BaseModel):
     template_name: str = Field(..., description="Template name.")
     description: Optional[str] = Field(None, description="Template description.")
     status: StatusTemplate = Field(..., description="Current status of the template.")
+    thumbnail_images: Optional[List[str]] = Field(None, description="List of thumbnail image URLs.")
 
 class TemplatesMasterCreate(TemplatesMasterBase):
     """
@@ -41,6 +42,7 @@ class TemplatesMasterUpdate(BaseModel):
     status: Optional[StatusTemplate] = Field(None, description="Current status of the template.")
     current_version_id: Optional[str] = Field(None, description="ObjectId of the current version.")
     access_config: Optional[AccessConfigUpdate] = Field(None, description="Access configuration.")
+    thumbnail_images: Optional[List[str]] = Field(None, description="List of thumbnail image URLs.")
     log: Optional[LogUpdate] = Field(None, description="Audit log.")
 
     @field_validator('current_version_id')

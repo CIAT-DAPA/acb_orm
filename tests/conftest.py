@@ -57,7 +57,7 @@ def setup_db(db_connection):
     }
     
     TemplatesVersion(id=template_version_id,
-        version_num="1.0",
+        version_num=1,
         log=Log(**valid_log),
         commit_message="Initial commit",
         content={"key": "value"}).save()
@@ -89,7 +89,7 @@ def setup_db(db_connection):
     BulletinsVersion(
         id=bulletin_version_id,
         bulletin_master_id=bulletin_master_id,
-        version_num="1.0",
+        version_num=1,
         previous_version_id=None,
         log=Log(**valid_log),
         data={"campo": "valor"}
