@@ -1,4 +1,4 @@
-from mongoengine import Document, StringField, EmbeddedDocumentField, ReferenceField, EnumField
+from mongoengine import Document, StringField, EmbeddedDocumentField, ReferenceField, EnumField, ListField
 from acb_orm.auxiliaries.log import Log
 from acb_orm.enums.status_bulletin import StatusBulletin
 
@@ -21,6 +21,7 @@ class BulletinsMaster(Document):
     base_template_master_id = ReferenceField('TemplatesMaster', required=True)
     base_template_version_id = ReferenceField('TemplatesVersion', required=True)
     current_version_id = ReferenceField('BulletinsVersion')
+    thumbnail_images = ListField(StringField())
     status = EnumField(StatusBulletin, default=StatusBulletin.DRAFT)
     access_config = EmbeddedDocumentField('AccessConfig', required=True)
     log = EmbeddedDocumentField(Log, required=True)
