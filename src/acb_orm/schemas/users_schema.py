@@ -9,6 +9,8 @@ class UsersBase(BaseModel):
     """
     ext_id: str = Field(..., description="External unique ID of the user.")
     is_active: Optional[bool] = Field(True, description="Indicates if the user account is active.")
+    first_name: Optional[str] = Field(None, description="First name of the user.")
+    last_name: Optional[str] = Field(None, description="Last name of the user.")
 
 class UsersCreate(UsersBase):
     """
@@ -23,6 +25,8 @@ class UsersUpdate(BaseModel):
     The log will be handled by the service layer.
     """
     is_active: Optional[bool] = Field(None, description="Indicates if the user account is active.")
+    first_name: Optional[str] = Field(None, description="First name of the user.")
+    last_name: Optional[str] = Field(None, description="Last name of the user.")
     log: Optional[LogUpdate] = Field(None, description="Audit log.")
 
 class UsersRead(UsersBase):
