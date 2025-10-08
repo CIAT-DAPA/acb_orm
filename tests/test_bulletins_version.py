@@ -24,6 +24,7 @@ def test_create_bulletins_version_model(db_connection, setup_db):
         bulletin_master_id=ObjectId(setup_db['bulletin_master']),
         version_num=2,
         previous_version_id=None,
+        commit_message="Initial commit",
         log=log,
         data={"campo": "nuevo valor"}
     )
@@ -45,6 +46,7 @@ def test_create_schema_valid(setup_db):
         "bulletin_master_id": setup_db['bulletin_master'],
         "version_num": "2.0",
         "previous_version_id": None,
+        "commit_message": "Initial commit",
         "data": {"campo": "nuevo valor"},
         "log": {
             "created_at": datetime.now(),
@@ -60,6 +62,7 @@ def test_create_schema_invalid_reference(non_existent_master_id, setup_db):
         "bulletin_master_id": non_existent_master_id,
         "version_num": 2,
         "previous_version_id": None,
+        "commit_message": "Initial commit",
         "data": {"campo": "nuevo valor"},
         "log": {
             "created_at": datetime.now(),
@@ -100,6 +103,7 @@ def test_read_schema_valid(setup_db):
         "id": setup_db['bulletin_version'],
         "bulletin_master_id": setup_db['bulletin_master'],
         "version_num": 1,
+        "commit_message": "Initial commit",
         "previous_version_id": None,
         "data": {"campo": "valor"},
         "log": {

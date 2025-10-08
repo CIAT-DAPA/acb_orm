@@ -17,6 +17,7 @@ class BulletinsVersion(Document):
 
     bulletin_master_id = ReferenceField('BulletinsMaster', required=True)
     version_num = IntField(required=True)
+    commit_message = StringField(required=True)
     previous_version_id = ReferenceField('self')
     log = EmbeddedDocumentField(Log, required=True)
     data = DictField(required=True)

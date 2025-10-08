@@ -11,8 +11,6 @@ class LogCreate(BaseModel):
     """
     created_at: Optional[datetime] = Field(default_factory=datetime.now, description="The date and time the document was created.")
     creator_user_id: str = Field(..., description="The ID of the user who created the document.")
-    creator_first_name: Optional[str] = Field(None, description="First name of the creator user.")
-    creator_last_name: Optional[str] = Field(None, description="Last name of the creator user.")
 
     @field_validator('creator_user_id')
     def validate_creator_user_id(cls, v):
@@ -25,8 +23,6 @@ class LogUpdate(BaseModel):
     """
     updated_at: Optional[datetime] = Field(default_factory=datetime.now, description="The date and time the document was last updated.")
     updater_user_id: str = Field(..., description="The ID of the user who last updated the document.")
-    updater_first_name: Optional[str] = Field(None, description="First name of the updater user.")
-    updater_last_name: Optional[str] = Field(None, description="Last name of the updater user.")
 
     @field_validator('updater_user_id')
     def validate_updater_user_id(cls, v):

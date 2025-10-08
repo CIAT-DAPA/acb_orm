@@ -10,7 +10,8 @@ class BulletinsVersionBase(BaseModel):
     Base schema for the bulletin version document.
     Contains common fields for creation and reading.
     """
-    version_num: int = Field(..., description="Version number of the bulletin.")
+    version_num: Optional[int] = Field(..., description="Version number of the bulletin.")
+    commit_message: str = Field(..., description="Message describing the changes in this version.")
     data: Dict[str, Any] = Field(..., description="User-specific data for the bulletin content.")
 
 class BulletinsVersionCreate(BulletinsVersionBase):
@@ -40,6 +41,7 @@ class BulletinsVersionUpdate(BaseModel):
     """
     bulletin_master_id: Optional[str] = Field(..., description="ObjectId of the bulletin master document.")
     previous_version_id: Optional[str] = Field(None, description="ObjectId of the previous bulletin version.")
+    commit_message: Optional[str] = Field(None, description="Message describing the changes in this version.")
     log: Optional[LogUpdate] = Field(None, description="Audit log.")
     data: Optional[Dict[str, Any]] = Field(None, description="Updated user-specific data.")
 
