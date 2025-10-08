@@ -18,7 +18,7 @@ class CardsCreate(CardsBase):
     Creation schema for the cards document.
     All fields are required when creating a new document.
     """
-    templates_master_ids: List[str] = Field(..., description="List of IDs of compatible template masters.")
+    templates_master_ids: Optional[List[str]] = Field(..., description="List of IDs of compatible template masters.")
     access_config: AccessConfigCreate = Field(..., description="Access configuration.")
     content: Dict[str, Any] = Field(..., description="Flexible content structure of the card.")
     log: Optional[LogCreate] = Field(None, description="Audit log.")
