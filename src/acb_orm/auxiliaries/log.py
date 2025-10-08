@@ -7,9 +7,5 @@ class Log(EmbeddedDocument):
     """
     created_at = DateTimeField(default=datetime.now)
     creator_user_id = ReferenceField('User', required=True)
-    creator_first_name = StringField()
-    creator_last_name = StringField()
     updated_at = DateTimeField()
     updater_user_id = ReferenceField('User')
-    updater_first_name = StringField()
-    updater_last_name = StringField()

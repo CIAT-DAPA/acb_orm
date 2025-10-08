@@ -16,4 +16,4 @@ def init_db():
     db_name = os.getenv("DATABASE_NAME")
     if not uri or not db_name:
         raise EnvironmentError("DATABASE_URI and DATABASE_NAME must be set as environment variables.")
-    connect(db=db_name, host=uri)
+    connect(db=db_name, host=uri, uuidRepresentation="standard")
