@@ -23,7 +23,7 @@ def db_connection():
     Conecta y desconecta de la base de datos de mongomock.
     Se ejecuta una sola vez por sesión de prueba.
     """
-    connect("test_db", host="localhost", mongo_client_class=mongomock.MongoClient)
+    connect("test_db", host="localhost", mongo_client_class=mongomock.MongoClient, uuidRepresentation="standard")
     yield
     disconnect()
 
@@ -91,6 +91,7 @@ def setup_db(db_connection):
         bulletin_master_id=bulletin_master_id,
         version_num=1,
         previous_version_id=None,
+        commit_message="Initial commit",
         log=Log(**valid_log),
         data={"campo": "valor"}
     ).save()
