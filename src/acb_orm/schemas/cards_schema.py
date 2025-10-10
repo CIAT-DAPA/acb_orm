@@ -4,6 +4,7 @@ from acb_orm.schemas.log_schema import LogCreate, LogRead, LogUpdate
 from acb_orm.schemas.access_config_schema import AccessConfigCreate, AccessConfigRead, AccessConfigUpdate
 from acb_orm.collections.templates_master import TemplatesMaster
 from acb_orm.validations.valid_reference_id import validate_reference_id
+from acb_orm.enums.status_card import StatusCard
 
 class CardsBase(BaseModel):
     """
@@ -12,6 +13,8 @@ class CardsBase(BaseModel):
     """
     card_name: str = Field(..., description="Name of the card.")
     card_type: str = Field(..., description="Type of the card (e.g., 'pest_or_disease').")
+    status: StatusCard = Field(StatusCard.ACTIVE, description="Current status of the card.")
+    
 
 class CardsCreate(CardsBase):
     """
@@ -38,6 +41,7 @@ class CardsUpdate(BaseModel):
     access_config: Optional[AccessConfigUpdate] = Field(None, description="Access configuration.")
     log: Optional[LogUpdate] = Field(None, description="Audit log.")
     content: Optional[Dict[str, Any]] = Field(None, description="Flexible content structure of the card.")
+    status: Optional[StatusCard] = Field(None, description="Current status of the card.")
 
     @field_validator('templates_master_ids', mode='before')
     def validate_templates_master_ids(cls, v):
