@@ -20,7 +20,6 @@ class Cards(Document):
     }
 
     card_name = StringField(required=True)
-    card_type = StringField(required=True)
     templates_master_ids = ListField(ReferenceField(TemplatesMaster))
     access_config = EmbeddedDocumentField(AccessConfig, required=True)
     card_type = EnumField(CardType)
