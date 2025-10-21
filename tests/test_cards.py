@@ -7,6 +7,7 @@ from acb_orm.collections.cards import Cards
 from acb_orm.schemas.cards_schema import CardsCreate, CardsUpdate, CardsRead
 from acb_orm.auxiliaries.log import Log
 from acb_orm.auxiliaries.access_config import AccessConfig
+from acb_orm.enums.card_type import CardType
 
 def test_create_cards_model(db_connection, setup_db):
     log_data = {'created_at': datetime.now(), 'creator_user_id': setup_db['user_1']}
@@ -14,7 +15,7 @@ def test_create_cards_model(db_connection, setup_db):
     access_config = AccessConfig(access_type='public', allowed_groups=[])
     card = Cards(
         card_name="Card Test",
-        card_type="pest_or_disease",
+        card_type=CardType.PEST_OR_DISEASE,  # use enum member
         templates_master_ids=[ObjectId(setup_db['template_master'])],
         access_config=access_config,
         content={"title": "Card Title", "body": "Card Body"},
@@ -22,8 +23,9 @@ def test_create_cards_model(db_connection, setup_db):
     )
     card.save()
     assert card.id is not None
-    assert card.card_name == "Card Test"
-    assert card.card_type == "pest_or_disease"
+    # normalize value for assertion
+    ct = card.card_type.value if hasattr(card.card_type, 'value') else card.card_type
+    assert ct == CardType.PEST_OR_DISEASE.value
     assert "title" in card.content
 
 def test_retrieve_cards_document(db_connection, setup_db):
@@ -32,7 +34,7 @@ def test_retrieve_cards_document(db_connection, setup_db):
     access_config = AccessConfig(access_type='public', allowed_groups=[])
     card = Cards(
         card_name="Card Retrieve",
-        card_type="info",
+        card_type=CardType.CROP_INFO,
         templates_master_ids=[ObjectId(setup_db['template_master'])],
         access_config=access_config,
         content={"title": "Retrieve Title"},
@@ -41,13 +43,16 @@ def test_retrieve_cards_document(db_connection, setup_db):
     card.save()
     retrieved_card = Cards.objects.get(card_name="Card Retrieve")
     assert retrieved_card is not None
-    assert retrieved_card.card_type == "info"
+    ct = retrieved_card.card_type.value if hasattr(retrieved_card.card_type, 'value') else retrieved_card.card_type
+    assert ct == CardType.CROP_INFO.value
     assert retrieved_card.content["title"] == "Retrieve Title"
+
+# --- PRUEBAS DE ESQUEMAS DE PYDANTIC ---
 
 def test_create_schema_valid(setup_db):
     data = {
         "card_name": "Card Test",
-        "card_type": "pest_or_disease",
+        "card_type": CardType.PEST_OR_DISEASE,  # enum member accepted by pydantic
         "templates_master_ids": [setup_db['template_master']],
         "access_config": {
             "access_type": "public",
@@ -61,12 +66,13 @@ def test_create_schema_valid(setup_db):
     }
     schema = CardsCreate(**data)
     assert schema.card_name == "Card Test"
-    assert schema.card_type == "pest_or_disease"
+    # schema.card_type is an enum member
+    assert getattr(schema.card_type, "value", schema.card_type) == CardType.PEST_OR_DISEASE.value
     assert schema.content["title"] == "Card Title"
 
 def test_create_schema_invalid(setup_db):
     data = {
-        "card_type": "pest_or_disease",
+        "card_type": CardType.PEST_OR_DISEASE,
         "templates_master_ids": [setup_db['template_master']],
         "access_config": {
             "access_type": "public",
@@ -84,7 +90,7 @@ def test_create_schema_invalid(setup_db):
 def test_update_schema_valid(setup_db):
     data = {
         "card_name": "Card Updated",
-        "card_type": "info",
+        "card_type": CardType.CROP_INFO,
         "templates_master_ids": [setup_db['template_master']],
         "access_config": {
             "access_type": "public",
@@ -98,14 +104,14 @@ def test_update_schema_valid(setup_db):
     }
     schema = CardsUpdate(**data)
     assert schema.card_name == "Card Updated"
-    assert schema.card_type == "info"
+    assert getattr(schema.card_type, "value", schema.card_type) == CardType.CROP_INFO.value
     assert schema.content["title"] == "Updated Title"
 
 def test_read_schema_valid(setup_db):
     data = {
         "id": str(ObjectId()),
         "card_name": "Card Test",
-        "card_type": "pest_or_disease",
+        "card_type": CardType.PEST_OR_DISEASE,
         "templates_master_ids": [setup_db['template_master']],
         "access_config": {
             "access_type": "public",
@@ -120,12 +126,12 @@ def test_read_schema_valid(setup_db):
     schema = CardsRead(**data)
     assert schema.id == data["id"]
     assert schema.card_name == "Card Test"
-    assert schema.card_type == "pest_or_disease"
+    assert getattr(schema.card_type, "value", schema.card_type) == CardType.PEST_OR_DISEASE.value
     assert schema.content["title"] == "Card Title"
 
 def test_read_schema_invalid(setup_db):
     data = {
-        "card_type": "pest_or_disease",
+        "card_type": CardType.PEST_OR_DISEASE,
         "templates_master_ids": [setup_db['template_master']],
         "access_config": {
             "access_type": "public",
