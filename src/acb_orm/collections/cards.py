@@ -3,6 +3,7 @@ from acb_orm.auxiliaries.access_config import AccessConfig
 from acb_orm.auxiliaries.log import Log
 from acb_orm.collections.templates_master import TemplatesMaster
 from acb_orm.enums.status_card import StatusCard
+from acb_orm.enums.card_type import CardType
 
 class Cards(Document):
     """
@@ -19,9 +20,9 @@ class Cards(Document):
     }
 
     card_name = StringField(required=True)
-    card_type = StringField(required=True)
     templates_master_ids = ListField(ReferenceField(TemplatesMaster))
     access_config = EmbeddedDocumentField(AccessConfig, required=True)
+    card_type = EnumField(CardType)
     status = EnumField(StatusCard)
     content = DictField(required=True)
     log = EmbeddedDocumentField(Log, required=True)
