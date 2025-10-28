@@ -18,6 +18,7 @@ class TemplatesMaster(Document):
     }
 
     template_name = StringField(required=True)
+    name_machine = StringField()
     description = StringField()
     current_version_id = ReferenceField('TemplatesVersion')
     status = EnumField(StatusTemplate)

@@ -18,6 +18,7 @@ class BulletinsMaster(Document):
     }
     
     bulletin_name = StringField(required=True)
+    name_machine = StringField()
     base_template_master_id = ReferenceField('TemplatesMaster', required=True)
     base_template_version_id = ReferenceField('TemplatesVersion', required=True)
     current_version_id = ReferenceField('BulletinsVersion')

@@ -14,6 +14,7 @@ class BulletinsMasterBase(BaseModel):
     Contains common fields for reading and creation.
     """
     bulletin_name: str = Field(..., description="Name of the bulletin.")
+    name_machine: Optional[str] = Field(None, description="Machine-readable identifier for the bulletin.")
     status: Optional[StatusBulletin] = Field(StatusBulletin.DRAFT, description="Current status of the bulletin.")
     thumbnail_images: Optional[List[str]] = Field(None, description="List of thumbnail image URLs.")
 
@@ -49,6 +50,7 @@ class BulletinsMasterUpdate(BaseModel):
     All fields are optional to allow for partial updates.
     """
     bulletin_name: Optional[str] = Field(None, description="Name of the bulletin.")
+    name_machine: Optional[str] = Field(None, description="Machine-readable identifier for the bulletin.")
     status: Optional[StatusBulletin] = Field(None, description="Current status of the bulletin.")
     base_template_master_id: Optional[str] = Field(None, description="ObjectId of the base template master.")
     base_template_version_id: Optional[str] = Field(None, description="ObjectId of the specific base template version.")

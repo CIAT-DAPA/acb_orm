@@ -44,3 +44,6 @@ class UserAccessRead(BaseModel):
     """
     user_id: str = Field(..., description="The unique ID of the user.")
     role_id: str = Field(..., description="The unique ID of the role assigned to the user.")
+    role_name: Optional[str] = Field(None, description="The name of the role assigned to the user.")
+    user_first_name: Optional[str] = Field(None, description="First name of the user.")
+    user_last_name: Optional[str] = Field(None, description="Last name of the user.")
