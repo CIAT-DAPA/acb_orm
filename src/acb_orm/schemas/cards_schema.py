@@ -13,9 +13,10 @@ class CardsBase(BaseModel):
     Contains common fields for creation and reading.
     """
     card_name: str = Field(..., description="Name of the card.")
+    name_machine: Optional[str] = Field(None, description="Machine-readable identifier for the card.")
     card_type: CardType = Field(..., description="Type of the card (e.g., 'pest_or_disease').")
     status: StatusCard = Field(StatusCard.ACTIVE, description="Current status of the card.")
-    
+    thumbnail_images: Optional[List[str]] = Field(None, description="List of thumbnail image URLs.")
 
 class CardsCreate(CardsBase):
     """
@@ -37,9 +38,11 @@ class CardsUpdate(BaseModel):
     The log will be handled by the service layer.
     """
     card_name: Optional[str] = Field(None, description="Name of the card.")
+    name_machine: Optional[str] = Field(None, description="Machine-readable identifier for the card.")
     card_type: Optional[CardType] = Field(None, description="Type of the card.")
     templates_master_ids: Optional[List[str]] = Field(None, description="List of IDs of compatible template masters.")
     access_config: Optional[AccessConfigUpdate] = Field(None, description="Access configuration.")
+    thumbnail_images: Optional[List[str]] = Field(None, description="List of thumbnail image URLs.")
     log: Optional[LogUpdate] = Field(None, description="Audit log.")
     content: Optional[Dict[str, Any]] = Field(None, description="Flexible content structure of the card.")
     status: Optional[StatusCard] = Field(None, description="Current status of the card.")
