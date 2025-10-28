@@ -12,6 +12,7 @@ class TemplatesMasterBase(BaseModel):
     Contains common fields for reading and creation.
     """
     template_name: str = Field(..., description="Template name.")
+    name_machine: Optional[str] = Field(None, description="Machine-readable identifier for the template.")
     description: Optional[str] = Field(None, description="Template description.")
     status: StatusTemplate = Field(..., description="Current status of the template.")
     thumbnail_images: Optional[List[str]] = Field(None, description="List of thumbnail image URLs.")
@@ -38,6 +39,7 @@ class TemplatesMasterUpdate(BaseModel):
     All fields are optional to allow for partial updates.
     """
     template_name: Optional[str] = Field(None, description="Template name.")
+    name_machine: Optional[str] = Field(None, description="Machine-readable identifier for the template.")
     description: Optional[str] = Field(None, description="Template description.")
     status: Optional[StatusTemplate] = Field(None, description="Current status of the template.")
     current_version_id: Optional[str] = Field(None, description="ObjectId of the current version.")
