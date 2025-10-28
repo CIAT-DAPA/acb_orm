@@ -13,7 +13,7 @@ class Cards(Document):
     meta = {
         'collection': 'cards',
         'indexes': [
-            {'fields': ['card_name'], 'unique': True},
+            'card_name',
             'card_type',
             'templates_master_ids'
         ]
