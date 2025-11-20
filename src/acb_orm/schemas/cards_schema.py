@@ -14,6 +14,7 @@ class CardsBase(BaseModel):
     """
     card_name: str = Field(..., description="Name of the card.")
     name_machine: Optional[str] = Field(None, description="Machine-readable identifier for the card.")
+    description: Optional[str] = Field(None, description="Card description.")
     card_type: CardType = Field(..., description="Type of the card (e.g., 'pest_or_disease').")
     status: StatusCard = Field(StatusCard.ACTIVE, description="Current status of the card.")
     thumbnail_images: Optional[List[str]] = Field(None, description="List of thumbnail image URLs.")
@@ -40,6 +41,7 @@ class CardsUpdate(BaseModel):
     card_name: Optional[str] = Field(None, description="Name of the card.")
     name_machine: Optional[str] = Field(None, description="Machine-readable identifier for the card.")
     card_type: Optional[CardType] = Field(None, description="Type of the card.")
+    description: Optional[str] = Field(None, description="Card description.")
     templates_master_ids: Optional[List[str]] = Field(None, description="List of IDs of compatible template masters.")
     access_config: Optional[AccessConfigUpdate] = Field(None, description="Access configuration.")
     thumbnail_images: Optional[List[str]] = Field(None, description="List of thumbnail image URLs.")
