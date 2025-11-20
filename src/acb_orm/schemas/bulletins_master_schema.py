@@ -15,6 +15,7 @@ class BulletinsMasterBase(BaseModel):
     """
     bulletin_name: str = Field(..., description="Name of the bulletin.")
     name_machine: Optional[str] = Field(None, description="Machine-readable identifier for the bulletin.")
+    description: Optional[str] = Field(None, description="Bulletin description.")
     status: Optional[StatusBulletin] = Field(StatusBulletin.DRAFT, description="Current status of the bulletin.")
     thumbnail_images: Optional[List[str]] = Field(None, description="List of thumbnail image URLs.")
 
@@ -51,6 +52,7 @@ class BulletinsMasterUpdate(BaseModel):
     """
     bulletin_name: Optional[str] = Field(None, description="Name of the bulletin.")
     name_machine: Optional[str] = Field(None, description="Machine-readable identifier for the bulletin.")
+    description: Optional[str] = Field(None, description="Bulletin description.")
     status: Optional[StatusBulletin] = Field(None, description="Current status of the bulletin.")
     base_template_master_id: Optional[str] = Field(None, description="ObjectId of the base template master.")
     base_template_version_id: Optional[str] = Field(None, description="ObjectId of the specific base template version.")
