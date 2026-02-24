@@ -29,10 +29,13 @@ class CommentBase(BaseModel):
     """
     Base schema for the Comment embedded document.
     """
-    comment_id: Optional[str] = Field(None, description="The unique ID of the comment.")
+    comment_id: str = Field(..., description="The unique ID of the comment.")
+    parent_comment_id: Optional[str] = Field(None, description="The ID of the parent comment, if this is a reply.")
+    comment_path: str = Field(..., description="The hierarchical path of the comment in the thread.")
     text: str = Field(..., description="The content of the comment.")
     created_at: datetime = Field(..., description="The date and time the comment was created.")
     target_element: Optional[TargetElementSchema] = Field(None, description="The specific element in the bulletin the comment is targeting.")
+    is_editable: bool = Field(True, description="Whether the comment can be edited.")
     
 class CommentCreate(CommentBase):
     """
@@ -54,6 +57,7 @@ class CommentUpdate(BaseModel):
     Update schema for an existing Comment.
     """
     text: Optional[str] = Field(None, description="The updated content of the comment.")
+    is_editable: Optional[bool] = Field(None, description="Whether the comment can be edited.")
 
 class CommentReplyUpdate(BaseModel):
     """
@@ -68,4 +72,6 @@ class CommentRead(CommentBase):
     """
     bulletin_version_id: str = Field(..., description="ID of the bulletin version.")
     author_id: str = Field(..., description="ID of the user who authored the comment.")
-    replies: Optional[List['CommentRead']] = Field(None, description="A list of replies to the comment.")
+    author_first_name: Optional[str] = Field(None, description="First name of the author.")
+    author_last_name: Optional[str] = Field(None, description="Last name of the author.")
+    replies: List['CommentRead'] = Field(default=[], description="A list of replies to the comment.")

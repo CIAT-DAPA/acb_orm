@@ -1,6 +1,7 @@
-from mongoengine import Document, DateTimeField, EmbeddedDocumentField, ReferenceField, ListField
+from mongoengine import Document, EmbeddedDocumentField, ReferenceField, ListField
 from acb_orm.auxiliaries.log import Log
-from acb_orm.auxiliaries.comment import Comment  # <-- Importa el modelo Comment
+from acb_orm.auxiliaries.comment import Comment  
+from acb_orm.auxiliaries.review_cycle import ReviewCycle 
 
 class BulletinReviews(Document):
     """
@@ -12,12 +13,11 @@ class BulletinReviews(Document):
         'indexes': [
             'bulletin_master_id',
             'reviewer_user_id',
-            'completed_at'
         ]
     }
 
     bulletin_master_id = ReferenceField('BulletinsMaster', required=True)
-    reviewer_user_id = ReferenceField('User', required=True)
+    reviewer_user_id = ReferenceField('User')
     log = EmbeddedDocumentField(Log, required=True)
-    completed_at = DateTimeField()
-    comments = ListField(EmbeddedDocumentField(Comment))
+    review_cycles = ListField(EmbeddedDocumentField(ReviewCycle), default=list)
+    comments = ListField(EmbeddedDocumentField(Comment), default=list)
