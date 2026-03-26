@@ -15,7 +15,10 @@ class Cards(Document):
         'indexes': [
             'card_name',
             'card_type',
-            'templates_master_ids'
+            'templates_master_ids',
+            'tags',
+            'status',
+            'parent_card_id'
         ]
     }
 
@@ -26,6 +29,8 @@ class Cards(Document):
     access_config = EmbeddedDocumentField(AccessConfig, required=True)
     card_type = EnumField(CardType)
     thumbnail_images = ListField(StringField())
+    tags = ListField(StringField())
+    parent_card_id = ReferenceField('self')
     status = EnumField(StatusCard)
     content = DictField(required=True)
     log = EmbeddedDocumentField(Log, required=True)
