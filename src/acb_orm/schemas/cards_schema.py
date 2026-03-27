@@ -29,6 +29,7 @@ class CardsCreate(CardsBase):
     access_config: AccessConfigCreate = Field(..., description="Access configuration.")
     content: Dict[str, Any] = Field(..., description="Flexible content structure of the card.")
     tags: Optional[List[str]] = Field(None, description="List of tags for the card.")
+    parent_card_id: Optional[str] = Field(None, description="ID of the parent card if this is a clone.")
     log: Optional[LogCreate] = Field(None, description="Audit log.")
 
     @field_validator('templates_master_ids', mode='before')
